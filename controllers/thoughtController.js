@@ -66,4 +66,34 @@ module.exports = {
       }
     });
   },
+  createReaction(req, res){
+    Thought.findOne({ _id: req.params.thoughtId }, (err, result) => {
+      if (result) {
+        const reactionObj = {
+          reactionBody:req.body.reactionBody,
+          username:req.body.username
+        }
+        const newReactions = result.reactions
+        newReactions.push(reactionObj)
+        Thought.findOneAndUpdate(
+          {_id: result._id},
+          {reactions:newReactions},
+          { new: true },
+          (err, result) => {
+            if (result) {
+              res.status(200).json(result);
+              console.log(`Updated: ${result}`);
+            } else {
+              console.log('Uh Oh, something went wrong');
+              console.log(err)
+              res.status(500).json({ message: err });
+            }
+          }
+        );
+      } else {
+        console.log('Uh Oh, something went wrong');
+        res.status(500).json({ message: 'something went wrong' });
+      }
+    });
+  },
 };
