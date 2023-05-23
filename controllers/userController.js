@@ -9,7 +9,7 @@ module.exports = {
   getSingleUser(req, res) {
     User.findOne({ _id: req.params.userId })
       .select('-__v')
-      .populate('posts')
+      .populate('thoughts')
       .then((user) =>
         !user
           ? res.status(404).json({ message: 'No user with that ID' })
@@ -47,6 +47,69 @@ module.exports = {
       if (result) {
         res.status(200).json(result);
         console.log(`Deleted: ${result}`);
+      } else {
+        console.log('Uh Oh, something went wrong');
+        res.status(500).json({ message: 'something went wrong' });
+      }
+    });
+  },
+
+  addFriend(req, res) {
+    User.findOne({ _id: req.params.userId }, (err, result) => {
+      if (result) {
+        const newFriends = result.friends
+        newFriends.push(req.params.friendId)
+        console.log('new friends array',newFriends)
+        User.findOneAndUpdate(
+          {_id: result._id},
+          {friends:newFriends},
+          { new: true },
+          (err, result) => {
+            if (result) {
+              res.status(200).json(result);
+              console.log(`Updated: ${result}`);
+            } else {
+              console.log('Uh Oh, something went wrong');
+              console.log(err)
+              res.status(500).json({ message: err });
+            }
+          }
+        );
+      } else {
+        console.log('Uh Oh, something went wrong');
+        res.status(500).json({ message: 'something went wrong' });
+      }
+    });
+  },
+  deleteFriend(req, res) {
+    User.findOne({ _id: req.params.userId }, (err, result) => {
+      if (result) {
+        const friendsArry = result.friends
+        for (let i = 0; i < result.friends.length; i++) {
+          const element = result.friends[i];
+          const friend2delete = element.valueOf()
+          if(friend2delete == req.params.friendId){
+            console.log(friendsArry.splice(i,1))
+            friendsArry.splice(i,1)
+            User.findOneAndUpdate(
+              {_id: result._id},
+              {friends:friendsArry},
+              { new: true },
+              (err, result) => {
+                if (result) {
+                  res.status(200).json(result);
+                  console.log(`Updated: ${result}`);
+                } else {
+                  console.log('Uh Oh, something went wrong');
+                  console.log(err)
+                  res.status(500).json({ message: err });
+                }
+              }
+            );
+          }else{
+            res.status(404).json({message:'couldnt find that friend'})
+          } 
+        }
       } else {
         console.log('Uh Oh, something went wrong');
         res.status(500).json({ message: 'something went wrong' });
