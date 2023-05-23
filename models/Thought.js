@@ -33,8 +33,8 @@ const thoughtSchema = new Schema(
       default: Date.now,
     },
     username: {
-      type: Boolean,
-      default: false,
+      type: String,
+      required: true,
     },
     reactions:[reactionSchema]
   },
@@ -46,7 +46,7 @@ const thoughtSchema = new Schema(
   }
 );
 
-// Create a virtual property `upvoteCount` that gets the amount of comments per user
+// Create a virtual property `reactionsCount` that gets the amount of reaction per thought
 thoughtSchema
   .virtual('reactionCount')
   // Getter
@@ -54,7 +54,7 @@ thoughtSchema
     return this.reactions.length;
   });
 
-// Initialize our Post model
+// Initialize our thought model
 const Thought = model('thought', thoughtSchema);
 
 module.exports = Thought;

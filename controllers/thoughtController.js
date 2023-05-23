@@ -7,11 +7,11 @@ module.exports = {
       .catch((err) => res.status(500).json(err));
   },
   getSingleThought(req, res) {
-    Thought.findOne({ _id: req.params.ThoughtId })
+    Thought.findOne({ _id: req.params.thoughtId })
       .then((thought) =>
-        !Thought
+        !thought
           ? res.status(404).json({ message: 'No Thought with that ID' })
-          : res.json(Thought)
+          : res.json(thought)
       )
       .catch((err) => res.status(500).json(err));
   },
@@ -21,7 +21,7 @@ module.exports = {
       .then((thought) => {
         return User.findOneAndUpdate(
           { _id: req.body.userId },
-          { $addToSet: { Thoughts: Thought._id } },
+          { $addToSet: { thoughts: thought._id } },
           { new: true }
         );
       })
