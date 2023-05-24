@@ -17,9 +17,19 @@ const reactionSchema = new Schema({
   },
   createdAt: {
     type: Date,
-    default: Date.now,
+    default:Date.now,
+      get:(date)=>{
+        if(date)return date.toISOString().split("T")[0]
+      }
+    } 
+},
+  {
+    toJSON: {
+      getters:true
+    },
+    id: false,
   }
-});
+);
 // Schema to create Post model
 const thoughtSchema = new Schema(
   {
@@ -31,6 +41,9 @@ const thoughtSchema = new Schema(
     createdAt: {
       type: Date,
       default: Date.now,
+      get:(date)=>{
+        if(date)return date.toISOString().split("T")[0]
+      }
     },
     username: {
       type: String,
@@ -41,6 +54,7 @@ const thoughtSchema = new Schema(
   {
     toJSON: {
       virtuals: true,
+      getters:true
     },
     id: false,
   }
