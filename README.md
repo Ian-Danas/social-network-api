@@ -33,7 +33,7 @@ To see the data that is returned up each route the user should follow the follow
 The same routes can be ran by swapping out users for thoughts or reactions. the friends routes will not apply to thoughts or reactions. The only routes provided for reactions is the create that takes a thought as a parameter and the delete which takes a thought id and a reaction id to delete that reaction from the thought.
  
 Link to deployed github repo: https://github.com/Ian-Danas/social-network-api
-Link to video demo: 
+Link to video demo: https://drive.google.com/file/d/1ojxsGF1O4ktuSjCRn0UxisneStx_iE7Z/view
 ## Contributing <a id = "Contributing"></a>
 Ian Danas
 ## Tests <a id = "Tests"></a>
