@@ -89,7 +89,6 @@ module.exports = {
           const element = result.friends[i];
           const friend2delete = element.valueOf()
           if(friend2delete == req.params.friendId){
-            console.log(friendsArry.splice(i,1))
             friendsArry.splice(i,1)
             User.findOneAndUpdate(
               {_id: result._id},

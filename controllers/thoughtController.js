@@ -96,4 +96,39 @@ module.exports = {
       }
     });
   },
+  deleteReaction(req, res) {
+    Thought.findById(req.params.thoughtId , (err, result) => {
+      if (result) {
+        const reactionsArry = result.reactions
+        for (let i = 0; i < result.reactions.length; i++) {
+          const element = result.reactions[i].reactionId;
+          console.log('element',element)
+          const reaction2delete = element.valueOf()
+          if(reaction2delete == req.params.reactionId){
+            reactionsArry.splice(i,1)
+            Thought.findOneAndUpdate(
+              {_id: result._id},
+              {reactions:reactionsArry},
+              { new: true },
+              (err, result) => {
+                if (result) {
+                  res.status(200).json(result);
+                  console.log(`Updated: ${result}`);
+                } else {
+                  console.log('Uh Oh, something went wrong');
+                  console.log(err)
+                  res.status(500).json({ message: err });
+                }
+              }
+            );
+          }//else{
+          //   res.status(404).json({message:'couldnt find that friend'})
+          // } 
+        }
+      } else {
+        console.log('Uh Oh, something went wrong');
+        res.status(500).json({ message: err });
+      }
+    });
+  },
 };
